@@ -12,6 +12,12 @@
       "title": "xcalc",
       "description": "",
       "mode": "view"
+    },
+    {
+      "name": "xconvert",
+      "title": "xconvert",
+      "description": "",
+      "mode": "view"
     }
   ],
   "dependencies": {
