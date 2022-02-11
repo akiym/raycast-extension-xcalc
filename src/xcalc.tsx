@@ -5,8 +5,6 @@ import { promisify } from "util";
 
 const execFilePromise = promisify(execFile);
 
-const accessoryTitles = ["dec", "hex", "oct", "bin"];
-
 interface Output {
   value: string;
   name?: string;
@@ -45,26 +43,20 @@ async function showFailureToast(title: string, error: Error): Promise<void> {
 }
 
 export default function Command() {
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [outputs, setOutputs] = React.useState<Output[]>([]);
 
   React.useEffect(() => {
+    if (query === "") {
+      return;
+    }
+
     setIsLoading(true);
     safeeval(query)
       .then((result) => {
         setIsLoading(false);
-        const lines = result.stdout.split("\n").filter((l) => l.length > 0);
-        if (lines.length === 1) {
-          return setOutputs([{ value: lines[0] }]);
-        } else {
-          return setOutputs(
-            lines.map((l, i) => ({
-              value: l,
-              name: accessoryTitles[i],
-            }))
-          );
-        }
+        setOutputs(JSON.parse(result.stdout));
       })
       .catch((err) => {
         setIsLoading(false);

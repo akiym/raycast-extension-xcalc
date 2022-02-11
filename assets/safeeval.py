@@ -53,6 +53,7 @@ _expr_codes = _const_codes + [
     'BINARY_OR',
     ]
 
+
 def _get_opcodes(codeobj):
     import dis
     if hasattr(dis, 'get_instructions'):
@@ -91,14 +92,20 @@ def expr(expr):
 
 if __name__ == '__main__':
     import sys
+    import json
     try:
-        r = expr(sys.argv[1] if len(sys.argv) == 2 else '')
+        r = expr(sys.argv[1])
         if isinstance(r, float) and r.is_integer():
             r = int(r)
 
         if isinstance(r, int):
-            print(f'{r:#d}\n{r:#x}\n{r:#o}\n{r:#b}')
+            print(json.dumps([
+                {'name': 'dec', 'value': f'{r:#d}'},
+                {'name': 'hex', 'value': f'{r:#x}'},
+                {'name': 'oct', 'value': f'{r:#o}'},
+                {'name': 'bin', 'value': f'{r:#b}'},
+            ]))
         else:
-            print(r)
+            print(json.dumps([{'value': r}]))
     except ValueError:
-        pass
+        print(json.dumps([]))
