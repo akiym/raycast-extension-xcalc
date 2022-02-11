@@ -89,10 +89,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@raycast/api@^1.27.1":
-  version "1.27.1"
-  resolved "https://registry.yarnpkg.com/@raycast/api/-/api-1.27.1.tgz#5f4d352fc7a7069717e7b55a4a244508b8878f71"
-  integrity sha512-h/M6bOl0gRHDFszldNxaxawrfjjTFjZpTh3gAYYiERhRaREiIKIpJ9gWZSuorY8M/tDasLMHP4maSsIpzBR2Uw==
+"@raycast/api@^1.28.0":
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/@raycast/api/-/api-1.28.0.tgz#50ac9c3d8a88a5e8d4fc8bb6f0b27bf159d610bb"
+  integrity sha512-EHp7zr4B+WT9Giegv3Cd8mkz1yRvlD/SQJHeRn42yVquYSX7iERt/DKb1R4M0Le+ZIfi+KLABKMw4qXemILgUQ==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
