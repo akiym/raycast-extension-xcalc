@@ -1,20 +1,15 @@
-import {
-  ActionPanel,
-  copyTextToClipboard,
-  CopyToClipboardAction,
-  List,
-  Toast,
-  ToastOptions,
-  ToastStyle,
-} from "@raycast/api";
+import { Action, ActionPanel, Clipboard, List, Toast } from "@raycast/api";
 import { execFile } from "child_process";
 import React from "react";
 import { promisify } from "util";
 
 const execFilePromise = promisify(execFile);
 
-function safeeval(query: string) {
-  return execFilePromise("python3", [`${__dirname}/assets/safeeval.py`, query]);
+const accessoryTitles = ["dec", "hex", "oct", "bin"];
+
+interface Output {
+  value: string;
+  name?: string;
 }
 
 interface ExecError extends Error {
@@ -23,20 +18,24 @@ interface ExecError extends Error {
   stderr: string;
 }
 
+function safeeval(query: string) {
+  return execFilePromise("python3", [`${__dirname}/assets/safeeval.py`, query]);
+}
+
 async function showFailureToast(title: string, error: Error): Promise<void> {
   if (error.name == "AbortError") {
     return;
   }
 
   const stderr = (error as ExecError).stderr?.trim() ?? "";
-  const options: ToastOptions = {
-    style: ToastStyle.Failure,
+  const options: Toast.Options = {
+    style: Toast.Style.Failure,
     title: title,
     message: stderr,
     primaryAction: {
       title: "Copy Error Log",
       onAction: () => {
-        copyTextToClipboard(stderr);
+        Clipboard.copy(stderr);
       },
     },
   };
@@ -48,14 +47,24 @@ async function showFailureToast(title: string, error: Error): Promise<void> {
 export default function Command() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [query, setQuery] = React.useState("");
-  const [outputLines, setOutputLines] = React.useState<string[]>([]);
+  const [outputs, setOutputs] = React.useState<Output[]>([]);
 
   React.useEffect(() => {
     setIsLoading(true);
     safeeval(query)
       .then((result) => {
         setIsLoading(false);
-        setOutputLines(result.stdout.split("\n").filter((l) => l.length > 0));
+        const lines = result.stdout.split("\n").filter((l) => l.length > 0);
+        if (lines.length === 1) {
+          return setOutputs([{ value: lines[0] }]);
+        } else {
+          return setOutputs(
+            lines.map((l, i) => ({
+              value: l,
+              name: accessoryTitles[i],
+            }))
+          );
+        }
       })
       .catch((err) => {
         setIsLoading(false);
@@ -63,18 +72,16 @@ export default function Command() {
       });
   }, [query]);
 
-  const accessoryTitles = ["dec", "hex", "oct", "bin"];
-
   return (
     <List onSearchTextChange={setQuery} searchBarPlaceholder={"0x1234+0x5678"} isLoading={isLoading}>
-      {outputLines.map((line, i) => (
+      {outputs.map((output, i) => (
         <List.Item
           key={i}
-          accessoryTitle={outputLines.length === 1 ? undefined : accessoryTitles[i]}
-          title={line}
+          title={output.value}
+          accessoryTitle={output.name}
           actions={
             <ActionPanel>
-              <CopyToClipboardAction title="Copy" content={line} />
+              <Action.CopyToClipboard title="Copy" content={output.value} />
             </ActionPanel>
           }
         />
