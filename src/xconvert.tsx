@@ -115,11 +115,9 @@ function dumpMarkdown(output: Buffer) {
 **Characters:** ${[...s].length}  
 **Bytes:** ${output.length}
 \`\`\`
-${hexdump(output)}
+${hexdump(output)}\`\`\`
 \`\`\`
-\`\`\`
-${s}
-\`\`\`
+${s}\`\`\`
 `;
 }
 
