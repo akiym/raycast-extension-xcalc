@@ -21,7 +21,8 @@
     }
   ],
   "dependencies": {
-    "@raycast/api": "^1.28.0"
+    "@raycast/api": "^1.28.0",
+    "html-entities": "^2.3.2"
   },
   "devDependencies": {
     "@types/node": "~16.10.0",

@@ -1,6 +1,7 @@
 import { Action, ActionPanel, clearSearchBar, Detail, List, useNavigation } from "@raycast/api";
 import { execSync } from "child_process";
 import React from "react";
+import { encode as encodeHtmlEntities, decode as decodeHtmlEntities } from "html-entities";
 import { hexdump } from "./lib/hexdump";
 
 interface Fn {
@@ -46,6 +47,11 @@ const functions: Fn[] = [
     name: "uri",
     encode: (b) => encodeURIComponent(b.toString()),
     decode: (b) => Buffer.from(decodeURIComponent(b.toString())),
+  },
+  {
+    name: "html",
+    encode: (b) => encodeHtmlEntities(b.toString()),
+    decode: (b) => Buffer.from(decodeHtmlEntities(b.toString())),
   },
   {
     name: "json",
