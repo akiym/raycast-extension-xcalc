@@ -106,6 +106,6 @@ if __name__ == '__main__':
                 {'name': 'bin', 'value': f'{r:#b}'},
             ]))
         else:
-            print(json.dumps([{'value': r}]))
+            print(json.dumps([{'value': str(r)}]))
     except ValueError:
         print(json.dumps([]))
