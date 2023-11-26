@@ -4,6 +4,8 @@ import React from "react";
 import { encode as encodeHtmlEntities, decode as decodeHtmlEntities } from "html-entities";
 import { hexdump } from "./lib/hexdump";
 
+const UNICODE_LITERAL_RE = new RegExp("\\\\u(?:([0-9a-fA-F]{4})|{([0-9a-fA-F]+)})", "g");
+
 interface Fn {
   name: string;
   encode: (b: Buffer) => string;
@@ -70,8 +72,13 @@ const functions: Fn[] = [
         })
         .join("");
     },
-    decode: () => {
-      throw new Error("unimplemented");
+    decode: (b) => {
+      let str = "";
+      let m;
+      while ((m = UNICODE_LITERAL_RE.exec(b.toString())) !== null) {
+        str += String.fromCodePoint(parseInt(m[2] ?? m[1], 16));
+      }
+      return Buffer.from(str);
     },
   },
   {
