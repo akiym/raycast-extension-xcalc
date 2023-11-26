@@ -61,6 +61,22 @@ const functions: Fn[] = [
     decode: (b) => Buffer.from(JSON.parse(b.toString()).toString()),
   },
   {
+    name: "char code",
+    encode: (b) => {
+      const c = b.toString();
+      if (c.length !== 1) {
+        throw new Error("not a character");
+      }
+      return String(c.charCodeAt(0));
+    },
+    decode: (b) => {
+      if (!Number.isInteger(Number(b)) || isNaN(parseInt(b.toString(), 10))) {
+        throw new Error("not an integer");
+      }
+      return Buffer.from(String.fromCharCode(Number(b)));
+    },
+  },
+  {
     name: "unicode",
     encode: (b) => {
       return Array.from(b.toString())
