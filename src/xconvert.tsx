@@ -1,7 +1,7 @@
 import { Action, ActionPanel, clearSearchBar, Detail, Icon, List, useNavigation } from "@raycast/api";
 import { execSync } from "child_process";
+import { decode as decodeHtmlEntities, encode as encodeHtmlEntities } from "html-entities";
 import React from "react";
-import { encode as encodeHtmlEntities, decode as decodeHtmlEntities } from "html-entities";
 import { hexdump } from "./lib/hexdump";
 
 const UNICODE_LITERAL_RE = new RegExp("\\\\u(?:([0-9a-fA-F]{4})|{([0-9a-fA-F]+)})", "g");
