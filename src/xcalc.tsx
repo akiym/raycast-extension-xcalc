@@ -70,7 +70,11 @@ export default function Command() {
         <List.Item
           key={i}
           title={output.value}
-          accessoryTitle={output.name}
+          accessories={[
+            {
+              text: output.name,
+            },
+          ]}
           actions={
             <ActionPanel>
               <Action.CopyToClipboard title="Copy" content={output.value} />

@@ -192,7 +192,7 @@ const Item: React.FC<{
       actions={
         <ActionPanel>
           <Action.CopyToClipboard title="Copy" content={output.toString()} />
-          <ActionPanel.Item title="Convert" onAction={() => onConvert(buffer)} />
+          <Action title="Convert" onAction={() => onConvert(buffer)} />
           <Action.Push title="Dump" shortcut={{ modifiers: ["cmd"], key: "d" }} target={<Dump buffer={buffer} />} />
         </ActionPanel>
       }
