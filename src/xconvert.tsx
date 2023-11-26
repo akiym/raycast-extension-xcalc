@@ -1,4 +1,4 @@
-import { Action, ActionPanel, clearSearchBar, Detail, List, useNavigation } from "@raycast/api";
+import { Action, ActionPanel, clearSearchBar, Detail, Icon, List, useNavigation } from "@raycast/api";
 import { execSync } from "child_process";
 import React from "react";
 import { encode as encodeHtmlEntities, decode as decodeHtmlEntities } from "html-entities";
@@ -169,15 +169,25 @@ const Dump: React.VFC<{ buffer: Buffer }> = ({ buffer }) => {
   );
 };
 
-const Item: React.VFC<{ name?: string; output: string | Buffer; onConvert: (buffer: Buffer) => void }> = ({
-  name,
-  output,
-  onConvert,
-}) => {
+const Item: React.VFC<{
+  name?: string;
+  output: string | Buffer;
+  icon?: "decode" | "encode";
+  onConvert: (buffer: Buffer) => void;
+}> = ({ name, output, icon, onConvert }) => {
   const buffer = typeof output === "string" ? Buffer.from(output) : output;
   return (
     <List.Item
-      accessoryTitle={name}
+      accessories={[
+        {
+          text: name,
+          ...(icon !== undefined && {
+            icon: {
+              source: icon === "decode" ? Icon.ArrowRight : Icon.ArrowLeft,
+            },
+          }),
+        },
+      ]}
       title={output.toString()}
       actions={
         <ActionPanel>
@@ -216,7 +226,7 @@ export default function Command() {
           encode: wrap(() => f.encode(input)),
           decode: wrap(() => f.decode(input)),
           name: f.name,
-        }))
+        })),
       );
     }
   }, [query, clipboard, buffer]);
@@ -240,16 +250,14 @@ export default function Command() {
         {outputs
           .filter((output) => filter(output.decode, input))
           .map((output) => (
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            <Item key={output.name} name={output.name} output={output.decode!} onConvert={onConvert} />
+            <Item key={output.name} name={output.name} output={output.decode!} icon="decode" onConvert={onConvert} />
           ))}
       </List.Section>
       <List.Section title="Encode">
         {outputs
           .filter((output) => filter(output.encode, input))
           .map((output) => (
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            <Item key={output.name} name={output.name} output={output.encode!} onConvert={onConvert} />
+            <Item key={output.name} name={output.name} output={output.encode!} icon="encode" onConvert={onConvert} />
           ))}
       </List.Section>
     </List>
