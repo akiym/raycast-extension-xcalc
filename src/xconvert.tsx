@@ -87,8 +87,12 @@ const functions: Fn[] = [
       }
       return date.toLocaleString();
     },
-    decode: () => {
-      throw new Error("unimplemented");
+    decode: (b) => {
+      const date = new Date(b.toString());
+      if (isNaN(date.getTime())) {
+        throw new Error("invalid date");
+      }
+      return Buffer.from(String(Math.floor(date.getTime() / 1000)));
     },
   },
 ];
