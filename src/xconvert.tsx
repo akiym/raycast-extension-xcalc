@@ -155,7 +155,7 @@ ${s}
 `;
 }
 
-const Dump: React.VFC<{ buffer: Buffer }> = ({ buffer }) => {
+const Dump: React.FC<{ buffer: Buffer }> = ({ buffer }) => {
   const { pop } = useNavigation();
   return (
     <Detail
@@ -169,7 +169,7 @@ const Dump: React.VFC<{ buffer: Buffer }> = ({ buffer }) => {
   );
 };
 
-const Item: React.VFC<{
+const Item: React.FC<{
   name?: string;
   output: string | Buffer;
   icon?: "decode" | "encode";
