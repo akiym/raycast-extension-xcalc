@@ -123,7 +123,8 @@ function dumpMarkdown(output: Buffer) {
 \`\`\`
 ${hexdump(output)}\`\`\`
 \`\`\`
-${s}\`\`\`
+${s}
+\`\`\`
 `;
 }
 
