@@ -1,22 +1,22 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "xcalc",
-  "title": "xcalc",
-  "description": "",
+  "title": "Xcalc",
+  "description": "A simple python-based calculator and text encoder/decoder.",
   "icon": "command-icon.png",
   "author": "akiym",
   "license": "MIT",
   "commands": [
     {
       "name": "xcalc",
-      "title": "xcalc",
-      "description": "",
+      "title": "Xcalc",
+      "description": "Calculate mathematical expressions with Python.",
       "mode": "view"
     },
     {
       "name": "xconvert",
-      "title": "xconvert",
-      "description": "",
+      "title": "Xconvert",
+      "description": "Encode/decode text using various encoding schemes.",
       "mode": "view"
     }
   ],

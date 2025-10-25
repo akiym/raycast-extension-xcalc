@@ -162,7 +162,7 @@ const Dump: React.FC<{ buffer: Buffer }> = ({ buffer }) => {
       markdown={dumpMarkdown(buffer)}
       actions={
         <ActionPanel>
-          <Action.CopyToClipboard title="Copy as hex" content={buffer.toString("hex")} onCopy={pop} />
+          <Action.CopyToClipboard title="Copy as Hex" content={buffer.toString("hex")} onCopy={pop} />
         </ActionPanel>
       }
     />
@@ -216,7 +216,7 @@ export default function Command() {
   }, [query]);
 
   React.useEffect(() => {
-    const input = query !== "" ? Buffer.from(query) : buffer ?? clipboard;
+    const input = query !== "" ? Buffer.from(query) : (buffer ?? clipboard);
 
     if (input === null || input.length === 0) {
       setOutputs([]);
@@ -237,7 +237,7 @@ export default function Command() {
     setBuffer(buffer);
   }, []);
 
-  const input = query !== "" ? query : buffer?.toString() ?? clipboard?.toString();
+  const input = query !== "" ? query : (buffer?.toString() ?? clipboard?.toString());
 
   return (
     <List onSearchTextChange={setQuery} searchBarPlaceholder={"..."} isLoading={isLoading}>
