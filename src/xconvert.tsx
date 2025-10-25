@@ -118,6 +118,53 @@ const functions: Fn[] = [
       return Buffer.from(String(Math.floor(date.getTime() / 1000)));
     },
   },
+  {
+    name: "ISO 8601 (UTC)",
+    encode: () => {
+      throw new Error("unimplemented");
+    },
+    decode: (b) => {
+      const date = new Date(b.toString());
+      if (isNaN(date.getTime())) {
+        throw new Error("invalid date");
+      }
+      const pad = (n: number) => String(n).padStart(2, "0");
+      const year = String(date.getUTCFullYear()).padStart(4, "0");
+      const month = pad(date.getUTCMonth() + 1);
+      const day = pad(date.getUTCDate());
+      const hour = pad(date.getUTCHours());
+      const second = pad(date.getUTCSeconds());
+      const minute = pad(date.getUTCMinutes());
+      const ms = date.getUTCMilliseconds() > 0 ? `.${String(date.getUTCMilliseconds()).padStart(3, "0")}` : "";
+      return Buffer.from(`${year}-${month}-${day}T${hour}:${minute}:${second}${ms}Z`);
+    },
+  },
+  {
+    name: "ISO 8601 (local)",
+    encode: () => {
+      throw new Error("unimplemented");
+    },
+    decode: (b) => {
+      const date = new Date(b.toString());
+      if (isNaN(date.getTime())) {
+        throw new Error("invalid date");
+      }
+      const pad = (n: number) => String(n).padStart(2, "0");
+      const year = String(date.getFullYear()).padStart(4, "0");
+      const month = pad(date.getMonth() + 1);
+      const day = pad(date.getDate());
+      const hour = pad(date.getHours());
+      const minute = pad(date.getMinutes());
+      const second = pad(date.getSeconds());
+      const ms = date.getMilliseconds() > 0 ? `.${String(date.getMilliseconds()).padStart(3, "0")}` : "";
+      const tzOffset = -new Date().getTimezoneOffset();
+      const sign = tzOffset >= 0 ? "+" : "-";
+      const offsetHours = pad(Math.floor(Math.abs(tzOffset) / 60));
+      const offsetMinutes = pad(Math.abs(tzOffset) % 60);
+      const tz = `${sign}${offsetHours}:${offsetMinutes}`;
+      return Buffer.from(`${year}-${month}-${day}T${hour}:${minute}:${second}${ms}${tz}`);
+    },
+  },
 ];
 
 function wrap<T>(f: () => T): T | null {
