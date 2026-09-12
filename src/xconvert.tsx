@@ -194,6 +194,9 @@ function dumpMarkdown(output: Buffer) {
 **Lines:** ${s.split("\n").length}  
 **Characters:** ${[...s].length}  
 **Bytes:** ${output.length}
+
+---
+
 \`\`\`
 ${hexdump(output)}\`\`\`
 \`\`\`
