@@ -1,0 +1,8 @@
+# src が react を直接 import するが react は @raycast/api の推移的依存でしかないため、
+# yarn の nodeLinker: node-modules 相当に巻き上げないと ray build が解決できない
+nodeLinker: hoisted
+
+allowBuilds:
+  esbuild: true
+
+trustPolicy: no-downgrade
